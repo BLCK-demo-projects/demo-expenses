@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: demo-expenses
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: password
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
