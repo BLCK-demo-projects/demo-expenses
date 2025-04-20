@@ -1,5 +1,6 @@
 package com.blck.demo_expenses.DB;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -15,6 +16,7 @@ public class Category {
 	private String name;
 
 	@OneToMany(mappedBy = "category")
+	@JsonBackReference
 	private Set<Expense> expenses;
 
 

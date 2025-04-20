@@ -45,12 +45,12 @@ public class ApiController {
 		return ResponseEntity.ok(expenseRepository.findAll());
 	}
 
-	@GetMapping
+	@GetMapping("/summary/monthly")
 	public ResponseEntity<Float> getMonthlySpentAmount() {
 		return ResponseEntity.ok(expenseRepository.getMonthlyTotal());
 	}
 
-	@GetMapping
+	@GetMapping("/summary/by-category")
 	public ResponseEntity<List<Object[]>> getSpentByCategory() {
 		return ResponseEntity.ok(expenseRepository.getSpentByCategory());
 	}

@@ -1,5 +1,6 @@
 package com.blck.demo_expenses.DB;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -20,6 +21,7 @@ public class Expense {
 
 	@ManyToOne
 	@JoinColumn(name = "category_id")
+	@JsonManagedReference
 	private Category category;
 
 
