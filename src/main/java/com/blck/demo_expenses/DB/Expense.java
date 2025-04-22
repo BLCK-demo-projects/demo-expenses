@@ -24,8 +24,6 @@ public class Expense {
 	@JsonManagedReference
 	private Category category;
 
-
-
 	public UUID getId() {
 		return id;
 	}

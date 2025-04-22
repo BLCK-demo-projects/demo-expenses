@@ -19,8 +19,6 @@ public class Category {
 	@JsonBackReference
 	private Set<Expense> expenses;
 
-
-
 	public UUID getId() {
 		return id;
 	}
