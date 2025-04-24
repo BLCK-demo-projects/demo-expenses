@@ -1,17 +1,14 @@
 package com.blck.demo_expenses;
 
-import com.blck.demo_expenses.DB.Category;
-import com.blck.demo_expenses.DB.CategoryRepository;
-import com.blck.demo_expenses.DB.Expense;
-import com.blck.demo_expenses.DB.ExpenseRepository;
+import com.blck.demo_expenses.DB.*;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 public class ApiController {
@@ -27,20 +24,41 @@ public class ApiController {
 	}
 
 	@PostMapping("/categories")
-	public ResponseEntity<Category> addCategory(@RequestBody Category category) {
+	public ResponseEntity<Category> addCategory(@RequestBody CategoryDTO dto) {
+		Category category = new Category(dto);
 		Category result = categoryRepository.save(category);
 		return ResponseEntity.ok(result);
 	}
 
 	@PostMapping("/expenses")
-	public ResponseEntity<Expense> addExpense(@RequestBody Expense expense) {
+	public ResponseEntity<Expense> addExpense(@RequestBody ExpenseDTO expenseDTO) {
+		Category category = categoryRepository.findByName(expenseDTO.categoryFK())
+				.orElseThrow(() -> new EntityNotFoundException("Category not found: " + expenseDTO.categoryFK()));
+		Expense expense = new Expense(expenseDTO, category);
 		Expense result = expenseRepository.save(expense);
 		return ResponseEntity.ok(result);
 	}
 
+	@DeleteMapping("/expenses/{name}")
+	public ResponseEntity<Void> deleteExpense(@PathVariable String name) {
+		Optional<Expense> expenseOpt = expenseRepository.findByName(name);
+		if (expenseOpt.isEmpty())
+			return ResponseEntity.notFound().build();
+		expenseRepository.delete(expenseOpt.get());
+		return ResponseEntity.noContent().build();
+	}
+
 	@GetMapping("/expenses")
-	public ResponseEntity<List<Expense>> getAllExpenses() {
-		return ResponseEntity.ok(expenseRepository.findAll());
+	public ResponseEntity<List<ExpenseDTO>> getAllExpenses() {
+		List<ExpenseDTO> allExpenses = expenseRepository.findAll().stream()
+				.map(expense -> new ExpenseDTO(
+						expense.getName(),
+						expense.getAmount(),
+						expense.getDate(),
+						expense.getCategoryFK().getName()
+				))
+				.collect(Collectors.toList());
+		return ResponseEntity.ok(allExpenses);
 	}
 
 	@GetMapping("/summary/monthly")

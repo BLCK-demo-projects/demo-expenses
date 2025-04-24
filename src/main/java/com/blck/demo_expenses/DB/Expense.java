@@ -1,6 +1,5 @@
 package com.blck.demo_expenses.DB;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -8,21 +7,28 @@ import java.util.UUID;
 
 @Entity
 public class Expense {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 
 	private float amount;
 
-	private String description;
+	private String name;
 
 	private Date date;
 
 	@ManyToOne
 	@JoinColumn(name = "category_id")
-	@JsonManagedReference
-	private Category category;
+	private Category categoryFK;
+
+	public Expense() {}
+
+	public Expense(ExpenseDTO expenseDTO, Category category) {
+		setAmount(expenseDTO.amount());
+		setName(expenseDTO.name());
+		setDate(expenseDTO.date());
+		setCategoryFK(category);
+	}
 
 	public UUID getId() {
 		return id;
@@ -40,12 +46,12 @@ public class Expense {
 		this.amount = amount;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getName() {
+		return name;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setName(String description) {
+		this.name = description;
 	}
 
 	public Date getDate() {
@@ -56,12 +62,12 @@ public class Expense {
 		this.date = date;
 	}
 
-	public Category getCategory() {
-		return category;
+	public Category getCategoryFK() {
+		return categoryFK;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setCategoryFK(Category category) {
+		this.categoryFK = category;
 	}
 
 

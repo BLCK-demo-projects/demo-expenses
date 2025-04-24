@@ -1,6 +1,10 @@
 server:
   port: 8080
 
+springdoc:
+  swagger-ui:
+    path: /swagger
+
 spring:
   application:
     name: demo-expenses
