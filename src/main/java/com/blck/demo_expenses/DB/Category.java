@@ -1,5 +1,6 @@
 package com.blck.demo_expenses.DB;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -14,7 +15,8 @@ public class Category {
 
 	private String name;
 
-	@OneToMany(mappedBy = "categoryFK")
+	@OneToMany(mappedBy = "categoryFK", cascade = CascadeType.REMOVE)
+	@JsonManagedReference
 	private Set<Expense> expenses;
 
 	public Category() {}
