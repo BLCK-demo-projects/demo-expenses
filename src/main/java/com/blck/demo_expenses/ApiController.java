@@ -1,6 +1,7 @@
 package com.blck.demo_expenses;
 
 import com.blck.demo_expenses.DB.*;
+import com.blck.demo_expenses.ResponseDTOs.ExpenseSumByCategory;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -62,12 +63,12 @@ public class ApiController {
 	}
 
 	@GetMapping("/summary/monthly")
-	public ResponseEntity<Float> getMonthlySpentAmount() {
-		return ResponseEntity.ok(expenseRepository.getMonthlyTotal());
+	public ResponseEntity<Double> getMonthlySpentAmount() {
+		return ResponseEntity.ok(expenseRepository.getTotalSpent());
 	}
 
 	@GetMapping("/summary/by-category")
-	public ResponseEntity<List<Object[]>> getSpentByCategory() {
+	public ResponseEntity<List<ExpenseSumByCategory>> getSpentByCategory() {
 		return ResponseEntity.ok(expenseRepository.getSpentByCategory());
 	}
 

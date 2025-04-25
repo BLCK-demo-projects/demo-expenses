@@ -11,7 +11,7 @@ public class Expense {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 
-	private float amount;
+	private double amount;
 
 	private String name;
 
@@ -38,11 +38,11 @@ public class Expense {
 		this.id = id;
 	}
 
-	public float getAmount() {
+	public double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(float amount) {
+	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 

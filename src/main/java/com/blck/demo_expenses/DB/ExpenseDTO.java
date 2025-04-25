@@ -4,7 +4,7 @@ import java.util.Date;
 
 public record ExpenseDTO(
 		String name,
-		float amount,
+		double amount,
 		Date date,
 		String categoryFK
 ) {}

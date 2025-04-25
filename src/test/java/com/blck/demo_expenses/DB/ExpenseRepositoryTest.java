@@ -1,5 +1,6 @@
 package com.blck.demo_expenses.DB;
 
+import com.blck.demo_expenses.ResponseDTOs.ExpenseSumByCategory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +31,7 @@ public class ExpenseRepositoryTest {
 		entityManager.persist(category);
 
 		Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2024-01-1");
-		ExpenseDTO expenseDTO = new ExpenseDTO("Heating", 10.f, date, "Bills");
+		ExpenseDTO expenseDTO = new ExpenseDTO("Shoes", 10.0, date, "Bills");
 		entityManager.persist(new Expense(expenseDTO, category));
 
 		categoryDTO = new CategoryDTO("Shopping");
@@ -39,16 +39,16 @@ public class ExpenseRepositoryTest {
 		entityManager.persist(category);
 
 		date = new SimpleDateFormat("yyyy-MM-dd").parse("2024-03-1");
-		expenseDTO = new ExpenseDTO("Heating", 10.f, date, "Shopping");
+		expenseDTO = new ExpenseDTO("Shoes", 5.0, date, "Shopping");
 		entityManager.persist(new Expense(expenseDTO, category));
 	}
 	
 	@Test
 	void findByName() {
-		Optional<Expense> expense = expenseRepository.findByName("Heating");
+		Optional<Expense> expense = expenseRepository.findByName("Shoes");
 
 		assertTrue(expense.isPresent());
-		assertEquals("Heating", expense.get().getName());
+		assertEquals("Shoes", expense.get().getName());
 	}
 
 	@Test
@@ -59,17 +59,18 @@ public class ExpenseRepositoryTest {
 	}
 
 	@Test
-	void getMonthlyTotal() {
-		assertEquals(20.f, expenseRepository.getMonthlyTotal());
+	void getTotalSpent() {
+		assertEquals(15.0, expenseRepository.getTotalSpent());
 	}
 
 	@Test
 	void getSpentByCategory() {
-		List<Object[]> spentByCategory = expenseRepository.getSpentByCategory();
+		List<ExpenseSumByCategory> spentByCategory = expenseRepository.getSpentByCategory();
 
 		assertAll(
-				() -> assertTrue(Arrays.toString(spentByCategory.getFirst()).contains("10.0")),
-				() -> assertTrue(Arrays.toString(spentByCategory.getLast()).contains("10.0"))
+				() -> assertEquals(2, spentByCategory.size()),
+				() -> assertEquals(new ExpenseSumByCategory("Bills", 10.0), spentByCategory.getFirst()),
+				() -> assertEquals(new ExpenseSumByCategory("Shopping", 5.0), spentByCategory.getLast())
 		);
 	}
 

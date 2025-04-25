@@ -1,5 +1,6 @@
 package com.blck.demo_expenses.DB;
 
+import com.blck.demo_expenses.ResponseDTOs.ExpenseSumByCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -12,13 +13,13 @@ public interface ExpenseRepository extends JpaRepository<Expense, UUID> {
 	Optional<Expense> findByName(String name);
 
 	@Query("SELECT SUM(e.amount) FROM Expense e")
-	Float getMonthlyTotal();
+	Double getTotalSpent();
 
-	@Query(
-			"SELECT c.name, SUM(e.amount) " +
-			"FROM Category c " +
-			"LEFT OUTER JOIN c.expenses e " + // in normal SQL: JOIN ON c.id = e.categoryFK
-			"GROUP BY c.name"
-	)
-	List<Object[]> getSpentByCategory();
+	@Query("""
+		SELECT new com.blck.demo_expenses.ResponseDTOs.ExpenseSumByCategory(c.name, SUM(e.amount))
+		FROM Category c
+		LEFT JOIN c.expenses e
+		GROUP BY c.name
+	""")
+	List<ExpenseSumByCategory> getSpentByCategory();
 }
