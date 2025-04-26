@@ -1,5 +1,6 @@
 package com.blck.demo_expenses.ResponseDTOs;
 
+import com.blck.demo_expenses.Exceptions.CategoryNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,4 +15,8 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 	}
 
+	@ExceptionHandler(CategoryNotFoundException.class)
+	public ResponseEntity<Object> handleCategoryNotFound(CategoryNotFoundException ex) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+	}
 }

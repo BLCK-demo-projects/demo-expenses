@@ -1,8 +1,8 @@
 package com.blck.demo_expenses;
 
 import com.blck.demo_expenses.DB.*;
+import com.blck.demo_expenses.Exceptions.CategoryNotFoundException;
 import com.blck.demo_expenses.ResponseDTOs.ExpenseSumByCategory;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 public class ApiController {
@@ -50,19 +49,21 @@ public class ApiController {
 		if (category.isEmpty())
 			return ResponseEntity.notFound().build();
 		categoryRepository.delete(category.get());
-		return ResponseEntity.noContent().build();
+		return ResponseEntity.ok().build();
 	}
 
 	@PostMapping("/expenses")
 	public ResponseEntity<?> addExpense(@RequestBody ExpenseDTO expenseDTO) {
 		Category category = categoryRepository.findByName(expenseDTO.categoryFK())
-				.orElseThrow(() -> new EntityNotFoundException("Category not found: " + expenseDTO.categoryFK()));
+				.orElseThrow(() -> new CategoryNotFoundException(expenseDTO.categoryFK()));
+
 		boolean expenseExists = category.getExpenses().stream()
 				.anyMatch(e -> expenseDTO.name().equalsIgnoreCase(e.getName()));
 		if (expenseExists) {
 			return ResponseEntity.status(HttpStatus.CONFLICT)
 					.body("Expense already exists: " + expenseDTO.name());
 		}
+
 		Expense expense = new Expense(expenseDTO, category);
 		Expense result = expenseRepository.save(expense);
 		return ResponseEntity.ok(result);
@@ -81,12 +82,12 @@ public class ApiController {
 		return ResponseEntity.ok(allExpenses);
 	}
 
-	@GetMapping("/summary/monthly")
-	public ResponseEntity<Double> getMonthlySpentAmount() {
+	@GetMapping("/summary/total-spent")
+	public ResponseEntity<Double> getTotalSpentAmount() {
 		return ResponseEntity.ok(expenseRepository.getTotalSpent());
 	}
 
-	@GetMapping("/summary/by-category")
+	@GetMapping("/summary/spent-by-category")
 	public ResponseEntity<List<ExpenseSumByCategory>> getSpentByCategory() {
 		return ResponseEntity.ok(expenseRepository.getSpentByCategory());
 	}

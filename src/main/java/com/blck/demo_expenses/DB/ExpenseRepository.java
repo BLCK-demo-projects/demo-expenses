@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface ExpenseRepository extends JpaRepository<Expense, UUID> {
 
-	Optional<Expense> findByName(String name);
+	List<Expense> findByName(String name);
 
 	@Query("SELECT SUM(e.amount) FROM Expense e")
 	Double getTotalSpent();

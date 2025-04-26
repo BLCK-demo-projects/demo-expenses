@@ -45,17 +45,16 @@ public class ExpenseRepositoryTest {
 	
 	@Test
 	void findByName() {
-		Optional<Expense> expense = expenseRepository.findByName("Shoes");
+		List<Expense> expenses = expenseRepository.findByName("Shoes");
 
-		assertTrue(expense.isPresent());
-		assertEquals("Shoes", expense.get().getName());
+		assertEquals("Shoes", expenses.getFirst().getName());
 	}
 
 	@Test
 	void findByNameNotFound() {
-		Optional<Expense> expense = expenseRepository.findByName("");
+		List<Expense> expenses = expenseRepository.findByName("");
 
-		assertFalse(expense.isPresent());
+		assertTrue(expenses.isEmpty());
 	}
 
 	@Test
