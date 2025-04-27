@@ -1,11 +1,17 @@
-docker pull postgres
+Demo project using Spring Data JPA, PostgreSQL in Docker, OpenAPI
 
-docker ps
+DB setup:
 
-docker-compose up -d
+`docker pull postgres` - download PostgreSQL image
 
-docker-compose stop
+`docker-compose up -d` - run compose file in /docker
 
-localhost:8080/swagger
+`docker-compose stop` - stop container process
 
-./gradlew generateOpenApiDocs - make github page
+`docker ps` - shows running containers
+
+API docs:
+
+`localhost:8080/swagger` - visit to see Swagger (while app is running)
+
+`./gradlew generateOpenApiDocs` - create OpenAPI json documentation
