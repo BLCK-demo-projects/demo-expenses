@@ -14,11 +14,11 @@ jobs:
       - name: Generate docs html using Redoc
         run: |
           npm install -g redoc-cli
-          redoc-cli bundle docs/openapi.json --output docs/index.html
+          redoc-cli bundle docs/openapi.json --output generated/index.html
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: docs
+          folder: generated
           token: ${{ secrets.GITHUB_TOKEN }}
       
