@@ -17,24 +17,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Setup JDK
-        uses: actions/setup-java@v4
-        with:
-          java-version: ${{ env.JAVA_VERSION }}
-          distribution: 'temurin'
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: current
-      - name: Grant execute permission for gradlew
-        run: chmod +x ./gradlew
-        
-      - name: Generate docs
-        run: ./gradlew generateOpenApiDocs
-      - name: Generate docs using Redoc
+      - name: Generate docs html using Redoc
         run: |
           npm install -g redoc-cli
-          redoc-cli bundle build/openapi.json --output docs/index.html
+          redoc-cli bundle docs/openapi.json --output docs/index.html
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
