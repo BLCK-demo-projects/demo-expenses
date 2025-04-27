@@ -36,3 +36,8 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+openApi {
+	outputDir.set(layout.buildDirectory.dir("../docs"))
+	outputFileName.set("openapi.json")
+}
