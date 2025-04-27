@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 env:
-  JAVA_VERSION: '24'
+  JAVA_VERSION: '23'
 
 permissions:
   contents: read
