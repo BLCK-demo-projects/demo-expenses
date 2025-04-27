@@ -1,23 +1,16 @@
-name: Build API Docs
+name: Build and deploy API Docs
 on:
   push:
     branches: [ main ]
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
-      - name: Check openapi.json
-        run: |
-          ls -l docs
-          ls -l docs/openapi.json
       - name: Generate docs html using Redoc
         run: |
           npm install -g redoc-cli
