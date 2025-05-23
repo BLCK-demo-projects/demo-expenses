@@ -1,23 +1,17 @@
 const CategoryBubble = ({ categoryName, isSelected, handleButtonClick }) => {
   const buttonStyle = {
-    backgroundColor: isSelected ? "green" : "white",
-    color: isSelected ? "white" : "black",
+    backgroundColor: isSelected ? "#ffa925" : "white",
+    color: "black",
     border: "2px solid black",
     margin: "3px",
-  };
-
-  const flex = {
-    display: "flex",
-    flexDirection: "column",
+    width: "250px",
   };
 
   return (
     <>
-      <div style={flex}>
-        <button onClick={() => handleButtonClick(categoryName)} style={buttonStyle}>
-          {categoryName}
-        </button>
-      </div>
+      <button onClick={() => handleButtonClick(categoryName)} style={buttonStyle}>
+        {categoryName}
+      </button>
     </>
   );
 };

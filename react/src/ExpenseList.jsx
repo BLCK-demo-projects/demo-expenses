@@ -63,16 +63,18 @@ const ExpenseList = ({ category }) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="formRow">
         <input type="text" placeholder="Expense" ref={nameRef} required />
         <input type="number" placeholder="Cost (€)" ref={amountRef} required />
         <input type="date" ref={dateRef} required />
-        <button type="submit">Add Expense</button>
+        <button type="submit" className="addButton">
+          Add Expense
+        </button>
       </form>
 
       <ul>
         {expensesOfCategory.map((expense, index) => (
-          <li key={index}>
+          <li className="expenseBubble" key={index}>
             {expense.name}, cost: {expense.amount} € ({formatDate(expense.date)})
           </li>
         ))}
