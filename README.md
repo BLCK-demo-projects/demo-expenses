@@ -3,6 +3,10 @@ Demo project using Spring Data JPA, PostgreSQL in Docker and OpenAPI. Basic Reac
 <img src="https://github.com/user-attachments/assets/bbe8e7b9-2283-46cb-819a-bfac5f9973fc" width="360"> 
 <img src="https://github.com/user-attachments/assets/d3643837-3f54-49a2-b2f4-32336e0f4240" width="320">
 
+Another version exists - rewritten in [Kotlin and Vue + Typescript](https://github.com/BLCK-demo-projects/demo-expenses-kotlin-vue-ts).
+
+---
+
 DB setup:
 
 `docker pull postgres` - download PostgreSQL image
